@@ -1,0 +1,127 @@
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  background: #000;
+  color: #fff;
+}
+
+/* Navbar */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background: #111;
+}
+.navbar .logo {
+  font-weight: 700;
+  color: #e50914;
+}
+.navbar ul {
+  display: flex;
+  list-style: none;
+  gap: 1.5rem;
+}
+.navbar a {
+  text-decoration: none;
+  color: #fff;
+  transition: color 0.3s;
+}
+.navbar a:hover {
+  color: #e50914;
+}
+
+/* Hero */
+.hero {
+  text-align: center;
+  padding: 6rem 1rem 5rem;
+  position: relative;
+  overflow: hidden;
+  background: radial-gradient(circle at center,
+              rgba(229, 9, 20, 0.25) 0%,
+              rgba(0, 0, 0, 0.95) 70%);
+}
+.hero::before {
+  content: "";
+  position: absolute;
+  top: -30%;
+  left: -30%;
+  width: 160%;
+  height: 160%;
+  background: radial-gradient(circle at center,
+              rgba(229, 9, 20, 0.35), transparent 70%);
+  filter: blur(100px);
+  animation: pulse 6s ease-in-out infinite alternate;
+  z-index: 0;
+}
+@keyframes pulse {
+  0% {opacity: 0.6; transform: scale(1);}
+  100% {opacity: 0.9; transform: scale(1.1);}
+}
+.hero h1, .hero p, .cta {
+  position: relative;
+  z-index: 1;
+}
+.hero h1 {
+  font-size: 2.5rem;
+  color: #fff;
+  text-shadow: 0 0 15px rgba(229, 9, 20, 0.6);
+}
+.hero p {
+  margin-top: 0.5rem;
+  font-weight: 300;
+  color: #ccc;
+}
+.cta {
+  background: #e50914;
+  color: #fff;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 1.5rem;
+  font-weight: 500;
+  transition: background 0.3s;
+}
+.cta:hover {
+  background: #b00710;
+}
+
+/* Content */
+.content {
+  padding: 3rem 2rem;
+}
+.grid {
+  display: grid;
+  gap: 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+}
+.card {
+  background: #111;
+  border-radius: 12px;
+  overflow: hidden;
+  text-align: center;
+  padding-bottom: 1rem;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 0 20px rgba(229, 9, 20, 0.25);
+}
+.card img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+.video-wrapper iframe {
+  width: 100%;
+  height: 200px;
+  border: none;
+  margin-top: 0.5rem;
+}
+footer {
+  text-align: center;
+  padding: 2rem;
+  background: #111;
+  color: #aaa;
+}
