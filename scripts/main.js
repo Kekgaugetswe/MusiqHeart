@@ -38,33 +38,20 @@ function renderSets(sets) {
 }
 
 // Appreciation Mix carousel
-async function renderCarousel(mixes) {
+function renderCarousel(mixes) {
   const track = document.querySelector(".carousel-track");
   if (!track) return;
 
-  // Filter out invalid or broken embeds
-  const validMixes = [];
-  for (const mix of mixes) {
-    try {
-      if (!mix.embedUrl || !mix.embedUrl.startsWith("https://www.youtube.com/embed/")) continue;
+  const safeMixes = mixes.filter(mix => 
+    mix.embedUrl && !mix.embedUrl.includes("unavailable") && mix.embedUrl.startsWith("https://www.youtube.com/embed/")
+  );
 
-      // Optional: lightweight test if video exists
-      const res = await fetch(mix.embedUrl, { method: "HEAD" });
-      if (!res.ok) continue;
-
-      validMixes.push(mix);
-    } catch (e) {
-      console.warn(`Skipping broken video: ${mix.title}`, e);
-    }
-  }
-
-  if (validMixes.length === 0) {
+  if (safeMixes.length === 0) {
     track.innerHTML = `<p style="text-align:center; color:#aaa;">No available mixes at the moment.</p>`;
     return;
   }
 
-  // Render as grid cards like DJ Sets
-  track.innerHTML = validMixes.map(mix => `
+  track.innerHTML = safeMixes.map(mix => `
     <div class="card">
       <h3>${mix.title}</h3>
       <p>${mix.description || "Curated Afro & Deep House energy."}</p>
