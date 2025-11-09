@@ -1,18 +1,11 @@
 [
   {
-    "id": "heartbeats01",
-    "title": "Heartbeats Live #01",
-    "description": "Afro House and Deep Soulful vibes recorded live at Studio 7.",
-    "thumbnail": "assets/images/heartbeats01.jpg",
-    "embedUrl": "https://www.youtube.com/embed/enjKp7bmXrM",
-    "date": "2025-11-05"
-  },
-  {
-    "id": "sunset02",
-    "title": "Sunset Vibes #02",
-    "description": "A soulful sunset session blending Afro and Deep house.",
-    "thumbnail": "assets/images/sunset02.jpg",
-    "embedUrl": "https://www.youtube.com/embed/jbgeC5pNaS0",
-    "date": "2025-11-01"
+    "id": "pulseSession",
+    "title": "Pulse Session (Coming Soon)",
+    "description": "Live Afro-Tech and Deep House experience — Every Second Friday · 19:30 on TikTok @MusiqHeart.",
+    "thumbnail": "assets/images/pulse-session.png",
+    "embedUrl": "https://www.youtube.com/embed/jbgeC5pNaS0", 
+    "date": "2025-11-15"
   }
+ 
 ]

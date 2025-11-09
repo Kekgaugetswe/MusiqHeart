@@ -91,6 +91,14 @@ body {
 .content {
   padding: 3rem 2rem;
 }
+.card img.thumbnail {
+  width: 100%;
+  height: 500px;
+  object-fit: contain;  /* 👈 changed from cover */
+  background: #000;      /* optional to fill the background */
+  border-bottom: 2px solid #222;
+  border-radius: 12px 12px 0 0;
+}
 .grid {
   display: grid;
   gap: 2rem;

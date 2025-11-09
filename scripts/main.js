@@ -24,11 +24,13 @@ function renderSets(sets) {
   const container = document.querySelector(".grid");
   container.innerHTML = sets.map(set => `
     <div class="card">
+      <img src="${set.thumbnail}" alt="${set.title}" class="thumbnail">
       <h3>${set.title}</h3>
       <p>${set.description}</p>
       <div class="video-wrapper">
         <iframe
           src="${set.embedUrl}"
+          title="${set.title}"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           allowfullscreen>
         </iframe>
