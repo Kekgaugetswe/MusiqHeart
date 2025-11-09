@@ -38,36 +38,24 @@ function renderSets(sets) {
 }
 
 // Appreciation Mix carousel
+// Appreciation Mix Series (card style like DJ sets)
 function renderCarousel(mixes) {
   const track = document.querySelector(".carousel-track");
   if (!track) return;
 
+  // Instead of carousel, render as grid cards like DJ Sets
   track.innerHTML = mixes.map(mix => `
-    <div class="carousel-item">
-      <iframe
-        src="${mix.embedUrl}"
-        title="${mix.title}"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-        allowfullscreen>
-      </iframe>
-      <p>${mix.title}</p>
+    <div class="card">
+      <h3>${mix.title}</h3>
+      <p>${mix.description || "Curated Afro & Deep House energy."}</p>
+      <div class="video-wrapper">
+        <iframe
+          src="${mix.embedUrl}"
+          title="${mix.title}"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen>
+        </iframe>
+      </div>
     </div>
   `).join("");
-
-  const items = Array.from(track.children);
-  let index = 0;
-
-  const updateCarousel = () => {
-    track.style.transform = `translateX(-${index * 100}%)`;
-  };
-
-  document.querySelector(".carousel-btn.next")?.addEventListener("click", () => {
-    index = (index + 1) % items.length;
-    updateCarousel();
-  });
-
-  document.querySelector(".carousel-btn.prev")?.addEventListener("click", () => {
-    index = (index - 1 + items.length) % items.length;
-    updateCarousel();
-  });
 }
