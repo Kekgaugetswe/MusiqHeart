@@ -6,27 +6,27 @@ document.addEventListener("DOMContentLoaded", async () => {
     const packages = await response.json();
 
     grid.innerHTML = packages.map(pkg => {
-      // Decide which MusiqHeart email to use
       const email =
         pkg.id === 1
           ? "bookings@musiqheart.com"
           : "hire@musiqheart.com";
 
-      const subject = `Enquiry: ${pkg.title}`;
+      const subject = `Booking Request: ${pkg.title}`;
 
-      // Use carriage returns for Outlook compatibility
       const body = `
 Hi MusiqHeart Team,
 
-I'm interested in the "${pkg.title}" package.
+I would like to book the "${pkg.title}" package.
 
-Could you please provide more details or availability?
+Preferred Date:
+Preferred Time:
+Location / Venue:
+Any Notes or Additional Info:
 
-Thank you!
-—
-`.replace(/\n/g, "\r\n"); // Ensures Windows-style newlines
+Please confirm availability and next steps.
 
-      // Encode only subject and body
+Thank you.`.replace(/\n/g, "\r\n");
+
       const mailto = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 
       return `
