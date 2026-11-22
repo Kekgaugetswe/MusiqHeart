@@ -1,5 +1,7 @@
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
+let stopCurrentPreview;
+
 function makeCard(mix, isEpisode) {
   const article = document.createElement('article');
   article.className = 'mix-card';
@@ -40,8 +42,43 @@ function makeCard(mix, isEpisode) {
     description.textContent = mix.description;
     copy.append(description);
   }
-  link.append(thumbnail, copy);
-  article.append(link);
+  const preview = document.createElement('button');
+  preview.type = 'button';
+  preview.className = 'preview-trigger';
+  preview.setAttribute('aria-label', `Play ${mix.title} in this card`);
+  preview.append(thumbnail);
+  const media = document.createElement('div');
+  media.className = 'card-media';
+  media.append(preview);
+  link.className = 'card-youtube-link';
+  link.textContent = 'Watch on YouTube';
+  const close = document.createElement('button');
+  close.type = 'button';
+  close.className = 'stop-preview';
+  close.textContent = 'Close preview';
+  close.hidden = true;
+  function stop() {
+    media.replaceChildren(preview);
+    close.hidden = true;
+    if (stopCurrentPreview === stop) stopCurrentPreview = undefined;
+  }
+  close.addEventListener('click', () => { stop(); preview.focus(); });
+  preview.addEventListener('click', () => {
+    stopCurrentPreview?.();
+    const iframe = document.createElement('iframe');
+    iframe.src = `https://www.youtube-nocookie.com/embed/${encodeURIComponent(mix.videoId)}?autoplay=1&playsinline=1&rel=0`;
+    iframe.title = mix.title;
+    iframe.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen';
+    iframe.allowFullscreen = true;
+    iframe.referrerPolicy = 'strict-origin-when-cross-origin';
+    media.replaceChildren(iframe);
+    close.hidden = false;
+    stopCurrentPreview = stop;
+  });
+  const actions = document.createElement('div');
+  actions.className = 'card-actions';
+  actions.append(link, close);
+  article.append(media, copy, actions);
   return article;
 }
 
@@ -66,8 +103,8 @@ async function loadCollection(url, container, isEpisode) {
 async function initSets() {
   const track = document.getElementById('mix-track');
   const [, mixesLoaded] = await Promise.all([
-    loadCollection('data/djsets.json?v=20261122-2', document.getElementById('episode-grid'), true),
-    loadCollection('data/appreciation.json?v=20261122-2', track, false)
+    loadCollection('data/djsets.json?v=20261122-3', document.getElementById('episode-grid'), true),
+    loadCollection('data/appreciation.json?v=20261122-3', track, false)
   ]);
   if (!mixesLoaded) return;
   document.querySelector('.carousel-controls').hidden = false;

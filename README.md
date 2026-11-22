@@ -20,7 +20,7 @@ Open http://localhost:8000. Use an HTTP server rather than opening index.html di
 - `index.html`: featured episode and verified playlist links. Update the featured card when a new episode is released.
 - `styles/sets.css`: responsive DJ Sets page styles; shared styles for the other pages remain in `styles/style.css`.
 
-Video cards open YouTube directly in a new tab. The red logo and favicon are retained. The Appreciation row supports touch/trackpad scrolling, keyboard scrolling when focused, and previous/next buttons. Reduced-motion preferences are respected.
+Video thumbnails open an embedded preview inside the same card. Only one preview is active at a time; Close preview stops it. A manual Watch on YouTube link remains available for blocked videos. No automatic popup or redirect occurs. The featured hero continues to link directly to YouTube. The red logo and favicon are retained. The Appreciation row supports touch/trackpad scrolling, keyboard scrolling when focused, and previous/next buttons. Reduced-motion preferences are respected.
 
 The episode IDs, playlist IDs and Appreciation titles were checked against the public @musiqheartza channel on 22 November 2026. The site is deliberately curated rather than automatically publishing upcoming episodes.
 
