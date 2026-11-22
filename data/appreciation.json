@@ -1,15 +1,37 @@
 [
-    {
-        "title": "LoopZar Appreciation Mix 001",
-        "embedUrl": "https://www.youtube.com/embed/W3-rzZ0FixE"
-    },
-    
-    {
-        "title": "LoopZar Appreciation Mix 004",
-        "embedUrl": "https://www.youtube.com/embed/enjKp7bmXrM"
-    },
-    {
-        "title": "LoopZar Appreciation Mix 005",
-        "embedUrl": "https://www.youtube.com/embed/uzWBIbkxg5c"
-    }
+  {
+    "title": "MusiqHeart Appreciation Mix 005",
+    "videoId": "uzWBIbkxg5c",
+    "embedUrl": "https://www.youtube.com/embed/uzWBIbkxg5c",
+    "thumbnail": "assets/images/appreciation-005.jpg",
+    "duration": "32:38"
+  },
+  {
+    "title": "MusiqHeart Appreciation Mix 004",
+    "videoId": "enjKp7bmXrM",
+    "embedUrl": "https://www.youtube.com/embed/enjKp7bmXrM",
+    "thumbnail": "assets/images/appreciation-004.jpg",
+    "duration": "31:01"
+  },
+  {
+    "title": "MusiqHeart Appreciation Mix 003",
+    "videoId": "1EruxCW1U60",
+    "embedUrl": "https://www.youtube.com/embed/1EruxCW1U60",
+    "thumbnail": "assets/images/appreciation-003.jpg",
+    "duration": ""
+  },
+  {
+    "title": "MusiqHeart Appreciation Mix 002",
+    "videoId": "ru3TJpZFKbY",
+    "embedUrl": "https://www.youtube.com/embed/ru3TJpZFKbY",
+    "thumbnail": "assets/images/appreciation-002.jpg",
+    "duration": ""
+  },
+  {
+    "title": "MusiqHeart Appreciation Mix 001",
+    "videoId": "W3-rzZ0FixE",
+    "embedUrl": "https://www.youtube.com/embed/W3-rzZ0FixE",
+    "thumbnail": "assets/images/appreciation-001.jpg",
+    "duration": ""
+  }
 ]

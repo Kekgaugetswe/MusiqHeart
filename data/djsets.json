@@ -1,11 +1,26 @@
 [
   {
-    "id": "pulseSession",
-    "title": "Pulse Session (Coming Soon)",
-    "description": "Live Afro-Tech and Deep House experience — Every Second Friday · 19:30 on TikTok @MusiqHeart.",
-    "thumbnail": "assets/images/pulse-session.png",
-    "embedUrl": "https://www.youtube.com/embed/jbgeC5pNaS0", 
-    "date": "2025-11-15"
+    "episode": "03",
+    "videoId": "-Dy7HwLSXdg",
+    "title": "Golden Hour Mix",
+    "description": "Afro House, Afro-Tech & 3-Step",
+    "duration": "43:47",
+    "thumbnail": "assets/images/episode-03.jpg"
+  },
+  {
+    "episode": "02",
+    "videoId": "60flQ5ve5_0",
+    "title": "Pull Up Kulture",
+    "description": "Afro House & 3-Step Experience",
+    "duration": "1:02:47",
+    "thumbnail": "assets/images/episode-02.jpg"
+  },
+  {
+    "episode": "01",
+    "videoId": "vembNbI62uc",
+    "title": "Pull Up Kulture",
+    "description": "Afro House & 3-Step Vibes",
+    "duration": "40:19",
+    "thumbnail": "assets/images/episode-01.jpg"
   }
- 
 ]

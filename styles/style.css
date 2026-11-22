@@ -138,3 +138,6 @@ footer {
   background: #111;
   color: #aaa;
 }
+/* Shared brand lockup */
+.navbar .logo,.footer-brand{display:inline-flex;align-items:center;gap:12px;text-decoration:none}
+.brand-mark{display:block;width:44px;height:52px;object-fit:contain;flex-shrink:0}

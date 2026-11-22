@@ -1,70 +1,92 @@
-document.addEventListener("DOMContentLoaded", () => {
-  // Scroll to sets
-  const scrollBtn = document.getElementById("scrollToSets");
-  if (scrollBtn) {
-    scrollBtn.addEventListener("click", () => {
-      document.getElementById("djSets").scrollIntoView({ behavior: "smooth" });
-    });
+const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+function makeCard(mix, isEpisode) {
+  const article = document.createElement('article');
+  article.className = 'mix-card';
+  const link = document.createElement('a');
+  link.href = `https://www.youtube.com/watch?v=${encodeURIComponent(mix.videoId)}`;
+  link.target = '_blank';
+  link.rel = 'noopener noreferrer';
+  link.setAttribute('aria-label', `Watch ${mix.title}${isEpisode ? `, episode ${mix.episode}` : ''} on YouTube (opens in a new tab)`);
+  const thumbnail = document.createElement('div');
+  thumbnail.className = 'thumbnail-wrap';
+  const image = document.createElement('img');
+  image.src = mix.thumbnail;
+  image.alt = '';
+  image.loading = 'lazy';
+  image.width = 1280;
+  image.height = 720;
+  const play = document.createElement('span');
+  play.className = 'card-play';
+  play.textContent = '▶';
+  play.setAttribute('aria-hidden', 'true');
+  thumbnail.append(image, play);
+  if (mix.duration) {
+    const duration = document.createElement('span');
+    duration.className = 'duration';
+    duration.textContent = mix.duration;
+    thumbnail.append(duration);
   }
-
-  // Load DJ sets
-  fetch("data/djsets.json")
-    .then(res => res.json())
-    .then(data => renderSets(data))
-    .catch(err => console.error("Error loading DJ sets:", err));
-
-  // Load Appreciation Mix Series
-  fetch("data/appreciation.json")
-    .then(res => res.json())
-    .then(data => renderCarousel(data))
-    .catch(err => console.error("Error loading Appreciation Mix Series:", err));
-});
-
-function renderSets(sets) {
-  const container = document.querySelector(".grid");
-  container.innerHTML = sets.map(set => `
-    <div class="card">
-      <img src="${set.thumbnail}" alt="${set.title}" class="thumbnail">
-      <h3>${set.title}</h3>
-      <p>${set.description}</p>
-      <div class="video-wrapper">
-        <iframe
-          src="${set.embedUrl}"
-          title="${set.title}"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowfullscreen>
-        </iframe>
-      </div>
-    </div>
-  `).join("");
+  const copy = document.createElement('div');
+  copy.className = 'card-copy';
+  const label = document.createElement('span');
+  label.className = 'card-label';
+  label.textContent = isEpisode ? `Episode ${mix.episode}` : 'Appreciation Series';
+  const title = document.createElement('h3');
+  title.textContent = mix.title;
+  copy.append(label, title);
+  if (mix.description) {
+    const description = document.createElement('p');
+    description.textContent = mix.description;
+    copy.append(description);
+  }
+  link.append(thumbnail, copy);
+  article.append(link);
+  return article;
 }
 
-// Appreciation Mix carousel
-function renderCarousel(mixes) {
-  const track = document.querySelector(".carousel-track");
-  if (!track) return;
-
-  const safeMixes = mixes.filter(mix => 
-    mix.embedUrl && !mix.embedUrl.includes("unavailable") && mix.embedUrl.startsWith("https://www.youtube.com/embed/")
-  );
-
-  if (safeMixes.length === 0) {
-    track.innerHTML = `<p style="text-align:center; color:#aaa;">No available mixes at the moment.</p>`;
-    return;
+async function loadCollection(url, container, isEpisode) {
+  try {
+    const response = await fetch(url);
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    const mixes = await response.json();
+    if (!Array.isArray(mixes) || !mixes.length) throw new Error('Empty collection');
+    container.replaceChildren(...mixes.map(mix => makeCard(mix, isEpisode)));
+    return true;
+  } catch (error) {
+    const message = document.createElement('p');
+    message.className = 'loading-message';
+    message.textContent = 'The mixes could not load. Open the playlist link to listen on YouTube.';
+    container.replaceChildren(message);
+    console.error('Unable to load collection:', error);
+    return false;
   }
-
-  track.innerHTML = safeMixes.map(mix => `
-    <div class="card">
-      <h3>${mix.title}</h3>
-      <p>${mix.description || "Curated Afro & Deep House energy."}</p>
-      <div class="video-wrapper">
-        <iframe
-          src="${mix.embedUrl}"
-          title="${mix.title}"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowfullscreen>
-        </iframe>
-      </div>
-    </div>
-  `).join("");
 }
+
+async function initSets() {
+  const track = document.getElementById('mix-track');
+  const [, mixesLoaded] = await Promise.all([
+    loadCollection('data/djsets.json', document.getElementById('episode-grid'), true),
+    loadCollection('data/appreciation.json', track, false)
+  ]);
+  if (!mixesLoaded) return;
+  document.querySelector('.carousel-controls').hidden = false;
+  const previous = document.getElementById('previous-mix');
+  const next = document.getElementById('next-mix');
+  function updateControls() {
+    previous.disabled = track.scrollLeft <= 2;
+    next.disabled = track.scrollLeft + track.clientWidth >= track.scrollWidth - 2;
+  }
+  function move(direction) {
+    const card = track.querySelector('.mix-card');
+    const step = card.getBoundingClientRect().width + parseFloat(getComputedStyle(track).gap);
+    track.scrollBy({ left: direction * step, behavior: reducedMotion.matches ? 'instant' : 'smooth' });
+  }
+  previous.addEventListener('click', () => move(-1));
+  next.addEventListener('click', () => move(1));
+  track.addEventListener('scroll', updateControls, { passive: true });
+  new ResizeObserver(updateControls).observe(track);
+  updateControls();
+}
+
+initSets();
