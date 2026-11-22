@@ -27,3 +27,7 @@ The episode IDs, playlist IDs and Appreciation titles were checked against the p
 ## Deployment cache
 
 HTML asset references, collection JSON requests and shared component requests use a release query parameter. Bump this version together when deploying changed assets to prevent cached scripts being paired with newer HTML.
+
+### Native player controls
+
+The featured section and mix cards now display YouTube's own embedded preview and controls. There are no custom play overlays or autoplay. Rounded corners are restored without thin outlines. Direct YouTube links remain available for blocked videos.

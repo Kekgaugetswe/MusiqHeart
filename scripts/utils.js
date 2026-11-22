@@ -7,7 +7,7 @@ async function loadComponent(id, file) {
     else document.body.append(container);
   }
   try {
-    const response = await fetch(`${file}?v=20261122-4`);
+    const response = await fetch(`${file}?v=20261122-6`);
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
     container.innerHTML = await response.text();
     if (id === 'navbar') {

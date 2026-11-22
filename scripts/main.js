@@ -1,83 +1,47 @@
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
-let stopCurrentPreview;
-
+function youtubePlayer(videoId, title, lazy = true) {
+  const iframe = document.createElement('iframe');
+  iframe.src = `https://www.youtube-nocookie.com/embed/${encodeURIComponent(videoId)}?playsinline=1&rel=0`;
+  iframe.title = title;
+  iframe.loading = lazy ? 'lazy' : 'eager';
+  iframe.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen';
+  iframe.allowFullscreen = true;
+  iframe.referrerPolicy = 'strict-origin-when-cross-origin';
+  return iframe;
+}
 function makeCard(mix, isEpisode) {
   const article = document.createElement('article');
   article.className = 'mix-card';
-  const link = document.createElement('a');
-  link.href = `https://www.youtube.com/watch?v=${encodeURIComponent(mix.videoId)}`;
-  link.target = '_blank';
-  link.rel = 'noopener noreferrer';
-  link.setAttribute('aria-label', `Watch ${mix.title}${isEpisode ? `, episode ${mix.episode}` : ''} on YouTube (opens in a new tab)`);
-  const thumbnail = document.createElement('div');
-  thumbnail.className = 'thumbnail-wrap';
-  const image = document.createElement('img');
-  image.src = mix.thumbnail;
-  image.alt = '';
-  image.loading = 'lazy';
-  image.width = 1280;
-  image.height = 720;
-  const play = document.createElement('span');
-  play.className = 'card-play';
-  play.textContent = '▶';
-  play.setAttribute('aria-hidden', 'true');
-  thumbnail.append(image, play);
-  if (mix.duration) {
-    const duration = document.createElement('span');
-    duration.className = 'duration';
-    duration.textContent = mix.duration;
-    thumbnail.append(duration);
-  }
+  const media = document.createElement('div');
+  media.className = 'card-media';
+  media.append(youtubePlayer(mix.videoId, mix.title));
   const copy = document.createElement('div');
   copy.className = 'card-copy';
+  const title = document.createElement('h3');
+  title.textContent = mix.title;
+  const metadata = document.createElement('div');
+  metadata.className = 'poster-meta';
   const label = document.createElement('span');
   label.className = 'card-label';
   label.textContent = isEpisode ? `Episode ${mix.episode}` : 'Appreciation Series';
-  const title = document.createElement('h3');
-  title.textContent = mix.title;
-  copy.append(label, title);
-  if (mix.description) {
-    const description = document.createElement('p');
-    description.textContent = mix.description;
-    copy.append(description);
+  metadata.append(label);
+  if (mix.duration) {
+    const duration = document.createElement('span');
+    duration.className = 'poster-duration';
+    duration.textContent = mix.duration;
+    metadata.append(duration);
   }
-  const preview = document.createElement('button');
-  preview.type = 'button';
-  preview.className = 'preview-trigger';
-  preview.setAttribute('aria-label', `Play ${mix.title} in this card`);
-  preview.append(thumbnail);
-  const media = document.createElement('div');
-  media.className = 'card-media';
-  media.append(preview);
-  link.className = 'card-youtube-link';
-  link.textContent = 'Watch on YouTube';
-  const close = document.createElement('button');
-  close.type = 'button';
-  close.className = 'stop-preview';
-  close.textContent = 'Close preview';
-  close.hidden = true;
-  function stop() {
-    media.replaceChildren(preview);
-    close.hidden = true;
-    if (stopCurrentPreview === stop) stopCurrentPreview = undefined;
-  }
-  close.addEventListener('click', () => { stop(); preview.focus(); });
-  preview.addEventListener('click', () => {
-    stopCurrentPreview?.();
-    const iframe = document.createElement('iframe');
-    iframe.src = `https://www.youtube-nocookie.com/embed/${encodeURIComponent(mix.videoId)}?autoplay=1&playsinline=1&rel=0`;
-    iframe.title = mix.title;
-    iframe.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen';
-    iframe.allowFullscreen = true;
-    iframe.referrerPolicy = 'strict-origin-when-cross-origin';
-    media.replaceChildren(iframe);
-    close.hidden = false;
-    stopCurrentPreview = stop;
-  });
+  copy.append(title, metadata);
   const actions = document.createElement('div');
   actions.className = 'card-actions';
-  actions.append(link, close);
+  const link = document.createElement('a');
+  link.className = 'card-youtube-link';
+  link.href = `https://www.youtube.com/watch?v=${encodeURIComponent(mix.videoId)}`;
+  link.target = '_blank';
+  link.rel = 'noopener noreferrer';
+  link.textContent = 'Watch on YouTube';
+  actions.append(link);
   article.append(media, copy, actions);
   return article;
 }
@@ -103,8 +67,8 @@ async function loadCollection(url, container, isEpisode) {
 async function initSets() {
   const track = document.getElementById('mix-track');
   const [, mixesLoaded] = await Promise.all([
-    loadCollection('data/djsets.json?v=20261122-4', document.getElementById('episode-grid'), true),
-    loadCollection('data/appreciation.json?v=20261122-4', track, false)
+    loadCollection('data/djsets.json?v=20261122-6', document.getElementById('episode-grid'), true),
+    loadCollection('data/appreciation.json?v=20261122-6', track, false)
   ]);
   if (!mixesLoaded) return;
   document.querySelector('.carousel-controls').hidden = false;
@@ -128,54 +92,12 @@ async function initSets() {
 
 initSets();
 
-// The featured artwork shares the single active preview with the mix cards.
+// Use YouTube's own preview and controls, without a custom play overlay.
 const featuredArt = document.querySelector('.featured-art');
-const featuredButton = document.querySelector('.featured-copy .button-primary');
 const featuredSlot = document.createElement('div');
 featuredSlot.className = 'featured-media';
+const videoId = new URL(featuredArt.href).searchParams.get('v');
+featuredSlot.append(youtubePlayer(videoId, 'Golden Hour Mix — Episode 03', false));
 featuredArt.replaceWith(featuredSlot);
-featuredSlot.append(featuredArt);
-const featuredActions = document.createElement('div');
-featuredActions.className = 'card-actions featured-actions';
-const featuredFallback = document.createElement('a');
-featuredFallback.href = featuredArt.href;
-featuredFallback.target = '_blank';
-featuredFallback.rel = 'noopener noreferrer';
-featuredFallback.className = 'card-youtube-link';
-featuredFallback.textContent = 'Watch on YouTube';
-const featuredClose = document.createElement('button');
-featuredClose.type = 'button';
-featuredClose.className = 'stop-preview';
-featuredClose.textContent = 'Close preview';
-featuredClose.hidden = true;
-featuredActions.append(featuredFallback, featuredClose);
-document.querySelector('.featured-copy').append(featuredActions);
-function stopFeaturedPreview() {
-  featuredSlot.replaceChildren(featuredArt);
-  featuredClose.hidden = true;
-  if (stopCurrentPreview === stopFeaturedPreview) stopCurrentPreview = undefined;
-}
-featuredClose.addEventListener('click', () => {
-  stopFeaturedPreview();
-  featuredArt.focus();
-});
-function playFeatured(event) {
-  if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
-  event.preventDefault();
-  if (stopCurrentPreview === stopFeaturedPreview) return;
-  stopCurrentPreview?.();
-  const videoId = new URL(featuredArt.href).searchParams.get('v');
-  const iframe = document.createElement('iframe');
-  iframe.src = `https://www.youtube-nocookie.com/embed/${encodeURIComponent(videoId)}?autoplay=1&playsinline=1&rel=0`;
-  iframe.title = 'Golden Hour Mix — Episode 03';
-  iframe.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen';
-  iframe.allowFullscreen = true;
-  iframe.referrerPolicy = 'strict-origin-when-cross-origin';
-  featuredSlot.replaceChildren(iframe);
-  featuredClose.hidden = false;
-  stopCurrentPreview = stopFeaturedPreview;
-}
-[featuredArt, featuredButton].forEach(link => {
-  link.setAttribute('aria-label', 'Play Golden Hour Mix episode 03 in the featured area');
-  link.addEventListener('click', playFeatured);
-});
+const featuredButton = document.querySelector('.featured-copy .button-primary');
+featuredButton.textContent = 'Watch on YouTube';

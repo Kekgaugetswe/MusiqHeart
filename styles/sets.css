@@ -51,3 +51,38 @@ a:focus-visible,button:focus-visible,[tabindex]:focus-visible{outline:3px solid 
 .featured-media iframe{display:block;width:100%;aspect-ratio:16/9;min-height:200px;border:0;background:#000}
 .featured-actions{width:100%;margin-top:16px;padding-bottom:0}
 @media(max-width:620px){.featured-media{grid-column:1;grid-row:1}}
+
+/* Poster Cut: artwork and solid captions, without outlined containers. */
+.featured-set{border:0;border-radius:0}
+.featured-copy{background:#101010}
+.episodes-grid{align-items:start;gap:24px;padding-top:24px}
+.episodes-grid .mix-card:first-child{margin-top:0}
+.mix-card{background:#050505;border:0;border-radius:0;box-shadow:none}
+.thumbnail-wrap,.preview-trigger,.card-media iframe{border:0;border-radius:0}
+.thumbnail-wrap,.mix-track .thumbnail-wrap{aspect-ratio:1/1;background:#050505}
+.thumbnail-wrap img,.mix-track .thumbnail-wrap img{object-fit:cover;object-position:center;background:#050505}
+.card-media iframe,.mix-track .card-media iframe{aspect-ratio:1/1}
+.card-play{left:50%;top:50%;bottom:auto;transform:translate(-50%,-50%);width:76px;height:76px;display:grid;place-items:center;padding:0;border:0;border-radius:50%;background:#fff;color:#080808}
+.card-play svg{display:block;width:38px;height:38px}
+.preview-trigger:hover .card-play{background:var(--red);color:#fff}
+.card-copy{padding:18px 20px 14px;background:#050505}
+.card-copy h3{font-size:clamp(20px,2vw,28px);font-weight:700;letter-spacing:-.6px;line-height:1.2;margin:0 0 10px}
+.poster-meta{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+.card-label{color:var(--red);font-size:14px;font-weight:700;letter-spacing:.4px;margin:0}
+.poster-duration{font-size:14px;font-weight:600;white-space:nowrap}
+.card-actions{padding:0 20px 16px}
+.art-play{background:#fff;border:0;box-shadow:none;width:76px;height:76px}
+.art-play svg{color:#080808;width:38px;height:38px}
+.featured-art:hover .art-play svg{color:#fff}
+.carousel-controls button{border:0;border-radius:0;background:transparent}
+.appreciation{border-top:0}
+.remix-strip{border:0;border-radius:0}
+@media(max-width:900px){.card-copy{padding:16px 14px 12px}.card-actions{padding:0 14px 14px}.card-play,.art-play{width:64px;height:64px}.card-label,.poster-duration{font-size:13px}}
+@media(max-width:620px){.episodes-grid{padding-top:0;gap:28px}.episodes-grid .mix-card:first-child{margin-top:0}.card-copy h3{font-size:25px}}
+
+/* Rounded surfaces with the genuine YouTube player UI. */
+.featured-set{border-radius:18px;border:0}
+.mix-card{border-radius:12px;overflow:hidden}
+.card-media{overflow:hidden;border-radius:12px 12px 0 0;background:#000}
+.card-media iframe,.mix-track .card-media iframe{aspect-ratio:16/9;min-height:200px;border:0;border-radius:0}
+.remix-strip{border-radius:12px}
