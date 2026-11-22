@@ -66,8 +66,8 @@ async function loadCollection(url, container, isEpisode) {
 async function initSets() {
   const track = document.getElementById('mix-track');
   const [, mixesLoaded] = await Promise.all([
-    loadCollection('data/djsets.json', document.getElementById('episode-grid'), true),
-    loadCollection('data/appreciation.json', track, false)
+    loadCollection('data/djsets.json?v=20261122-2', document.getElementById('episode-grid'), true),
+    loadCollection('data/appreciation.json?v=20261122-2', track, false)
   ]);
   if (!mixesLoaded) return;
   document.querySelector('.carousel-controls').hidden = false;

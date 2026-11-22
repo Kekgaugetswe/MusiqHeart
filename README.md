@@ -23,3 +23,7 @@ Open http://localhost:8000. Use an HTTP server rather than opening index.html di
 Video cards open YouTube directly in a new tab. The red logo and favicon are retained. The Appreciation row supports touch/trackpad scrolling, keyboard scrolling when focused, and previous/next buttons. Reduced-motion preferences are respected.
 
 The episode IDs, playlist IDs and Appreciation titles were checked against the public @musiqheartza channel on 22 November 2026. The site is deliberately curated rather than automatically publishing upcoming episodes.
+
+## Deployment cache
+
+HTML asset references, collection JSON requests and shared component requests use a release query parameter. Bump this version together when deploying changed assets to prevent cached scripts being paired with newer HTML.
