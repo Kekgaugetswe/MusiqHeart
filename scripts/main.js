@@ -103,8 +103,8 @@ async function loadCollection(url, container, isEpisode) {
 async function initSets() {
   const track = document.getElementById('mix-track');
   const [, mixesLoaded] = await Promise.all([
-    loadCollection('data/djsets.json?v=20261122-3', document.getElementById('episode-grid'), true),
-    loadCollection('data/appreciation.json?v=20261122-3', track, false)
+    loadCollection('data/djsets.json?v=20261122-4', document.getElementById('episode-grid'), true),
+    loadCollection('data/appreciation.json?v=20261122-4', track, false)
   ]);
   if (!mixesLoaded) return;
   document.querySelector('.carousel-controls').hidden = false;
@@ -127,3 +127,55 @@ async function initSets() {
 }
 
 initSets();
+
+// The featured artwork shares the single active preview with the mix cards.
+const featuredArt = document.querySelector('.featured-art');
+const featuredButton = document.querySelector('.featured-copy .button-primary');
+const featuredSlot = document.createElement('div');
+featuredSlot.className = 'featured-media';
+featuredArt.replaceWith(featuredSlot);
+featuredSlot.append(featuredArt);
+const featuredActions = document.createElement('div');
+featuredActions.className = 'card-actions featured-actions';
+const featuredFallback = document.createElement('a');
+featuredFallback.href = featuredArt.href;
+featuredFallback.target = '_blank';
+featuredFallback.rel = 'noopener noreferrer';
+featuredFallback.className = 'card-youtube-link';
+featuredFallback.textContent = 'Watch on YouTube';
+const featuredClose = document.createElement('button');
+featuredClose.type = 'button';
+featuredClose.className = 'stop-preview';
+featuredClose.textContent = 'Close preview';
+featuredClose.hidden = true;
+featuredActions.append(featuredFallback, featuredClose);
+document.querySelector('.featured-copy').append(featuredActions);
+function stopFeaturedPreview() {
+  featuredSlot.replaceChildren(featuredArt);
+  featuredClose.hidden = true;
+  if (stopCurrentPreview === stopFeaturedPreview) stopCurrentPreview = undefined;
+}
+featuredClose.addEventListener('click', () => {
+  stopFeaturedPreview();
+  featuredArt.focus();
+});
+function playFeatured(event) {
+  if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+  event.preventDefault();
+  if (stopCurrentPreview === stopFeaturedPreview) return;
+  stopCurrentPreview?.();
+  const videoId = new URL(featuredArt.href).searchParams.get('v');
+  const iframe = document.createElement('iframe');
+  iframe.src = `https://www.youtube-nocookie.com/embed/${encodeURIComponent(videoId)}?autoplay=1&playsinline=1&rel=0`;
+  iframe.title = 'Golden Hour Mix — Episode 03';
+  iframe.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen';
+  iframe.allowFullscreen = true;
+  iframe.referrerPolicy = 'strict-origin-when-cross-origin';
+  featuredSlot.replaceChildren(iframe);
+  featuredClose.hidden = false;
+  stopCurrentPreview = stopFeaturedPreview;
+}
+[featuredArt, featuredButton].forEach(link => {
+  link.setAttribute('aria-label', 'Play Golden Hour Mix episode 03 in the featured area');
+  link.addEventListener('click', playFeatured);
+});

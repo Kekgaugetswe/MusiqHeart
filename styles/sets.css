@@ -45,3 +45,9 @@ a:focus-visible,button:focus-visible,[tabindex]:focus-visible{outline:3px solid 
 .card-youtube-link,.stop-preview{font-size:13px;color:#bbb!important;text-decoration:underline!important}
 .stop-preview{border:0;background:transparent;padding:6px 0;font-family:inherit;cursor:pointer}
 .stop-preview[hidden]{display:none}
+
+.featured-media{grid-column:2;grid-row:1;min-width:0;display:flex;align-items:center;background:#060b13}
+.featured-media .featured-art{width:100%;height:100%}
+.featured-media iframe{display:block;width:100%;aspect-ratio:16/9;min-height:200px;border:0;background:#000}
+.featured-actions{width:100%;margin-top:16px;padding-bottom:0}
+@media(max-width:620px){.featured-media{grid-column:1;grid-row:1}}
